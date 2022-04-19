@@ -14,3 +14,5 @@ document.querySelector('.button-importance').addEventListener('click', ({target}
     }
   }
 })
+
+export default imp;
