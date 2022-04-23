@@ -29,7 +29,8 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.12.1"
+    "@babel/polyfill": "^7.12.1",
+    "eslint": "^8.13.0"
   },
   "repository": {
     "type": "git",
