@@ -1,5 +1,5 @@
-
-class Task {
+import {Tomato} from './tomato';
+export class Task {
   #name;
   #count;
   #id;
@@ -36,12 +36,4 @@ class Task {
   }
 }
 
-const item = new Task('Имя', 2);
-
-console.log(item.id);
-console.log(item.name);
-console.log(item.count);
-item.nameChange('gft');
-item.countChange(5);
-console.log(item.name);
-console.log(item.count);
+// const item = new Task('Имя', 2);

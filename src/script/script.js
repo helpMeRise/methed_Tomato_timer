@@ -16,4 +16,3 @@ document.querySelector('.button-importance')
       }
     });
 
-export default imp;
