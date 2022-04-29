@@ -1,4 +1,5 @@
 import {Tomato} from './tomato';
+
 export class Task {
   #name;
   #count;
@@ -36,4 +37,24 @@ export class Task {
   }
 }
 
-// const item = new Task('Имя', 2);
+export class CommonTask extends Task {
+  constructor(name, count, importance = 'common') {
+    super(name, count);
+    this.importance = importance;
+  }
+}
+
+export class NormalTask extends Task {
+  constructor(name, count, importance = 'normal') {
+    super(name, count);
+    this.importance = importance;
+  }
+}
+
+export class ImportantTask extends Task {
+  constructor(name, count, importance = 'important') {
+    super(name, count);
+    this.importance = importance;
+  }
+}
+

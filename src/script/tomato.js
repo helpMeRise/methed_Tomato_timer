@@ -1,11 +1,16 @@
 import {Task} from './task';
+
 export class Tomato {
   #taskTime = 25;
   #pauseTime = 5;
   #bigPauseTime = 15;
   constructor(tasks = []) {
+    if (Tomato.instance) {
+      return Tomato.instance;
+    }
     this.tasks = tasks;
     this.activeTask = null;
+    Tomato.instance = this;
   }
 
   addTask(task) {
@@ -41,3 +46,5 @@ export class Tomato {
     });
   }
 }
+
+export const timer = new Tomato([]);
