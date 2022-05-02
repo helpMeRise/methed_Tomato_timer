@@ -2,7 +2,9 @@ import {CommonTask, NormalTask, ImportantTask} from './task';
 import {timer} from './tomato';
 
 class TaskCreationCommand {
-  constructor(importance) {
+  constructor(name, count, importance) {
+    this.name = name;
+    this.count = count;
     this.importance = importance;
   }
 
@@ -13,21 +15,21 @@ class TaskCreationCommand {
 
 class ToCommon extends TaskCreationCommand {
   execute() {
-    const newTask = new CommonTask();
+    const newTask = new CommonTask(this.name, this.count);
     timer.addTask(newTask);
   }
 }
 
 class ToNormal extends TaskCreationCommand {
   execute() {
-    const newTask = new NormalTask();
+    const newTask = new NormalTask(this.name, this.count);
     timer.addTask(newTask);
   }
 }
 
 class ToImportant extends TaskCreationCommand {
   execute() {
-    const newTask = new ImportantTask();
+    const newTask = new ImportantTask(this.name, this.count);
     timer.addTask(newTask);
   }
 }
@@ -37,23 +39,24 @@ export class TaskCreation {
     this.commands = [];
   }
 
-  operation(importance) {
+  operation(name, count, importance) {
     let Command;
-    if (importance === 'common') {
+    if (importance === 'default') {
       Command = ToCommon;
-    } else if (importance === 'normal') {
+    } else if (importance === 'so-so') {
       Command = ToNormal;
     } else {
       Command = ToImportant;
     }
-    const command = new Command(importance);
+    const command = new Command(name, count, importance);
     if (command.execute()) {
       this.commands.push(command);
     }
   }
 }
 
-export const taskCreation = importance => {
-  const task = new TaskCreation();
-  task.operation(importance);
+export const taskCreation = (name, count, importance) => {
+  const task = new TaskCreation(name, count);
+
+  task.operation(name, count, importance);
 };

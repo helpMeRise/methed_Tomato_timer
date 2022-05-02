@@ -38,14 +38,14 @@ export class Task {
 }
 
 export class CommonTask extends Task {
-  constructor(name, count, importance = 'common') {
+  constructor(name, count, importance = 'default') {
     super(name, count);
     this.importance = importance;
   }
 }
 
 export class NormalTask extends Task {
-  constructor(name, count, importance = 'normal') {
+  constructor(name, count, importance = 'so-so') {
     super(name, count);
     this.importance = importance;
   }
