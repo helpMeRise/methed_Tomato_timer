@@ -1,5 +1,5 @@
 import {CommonTask, NormalTask, ImportantTask} from './task';
-import {timer} from './tomato';
+import {tomato} from './tomato';
 
 class TaskCreationCommand {
   constructor(name, count, importance) {
@@ -16,21 +16,21 @@ class TaskCreationCommand {
 class ToCommon extends TaskCreationCommand {
   execute() {
     const newTask = new CommonTask(this.name, this.count);
-    timer.addTask(newTask);
+    tomato.addTask(newTask);
   }
 }
 
 class ToNormal extends TaskCreationCommand {
   execute() {
     const newTask = new NormalTask(this.name, this.count);
-    timer.addTask(newTask);
+    tomato.addTask(newTask);
   }
 }
 
 class ToImportant extends TaskCreationCommand {
   execute() {
     const newTask = new ImportantTask(this.name, this.count);
-    timer.addTask(newTask);
+    tomato.addTask(newTask);
   }
 }
 

@@ -1,13 +1,16 @@
 import {Tomato} from './tomato';
 export class RenderTomato {
-  constructor(app, timer) {
+  constructor(app, tomato) {
     this.app = app;
-    this.timer = timer;
+    this.tomato = tomato;
   }
 
   init() {
     this.activeTaskWrapper = document.createElement('div');
     this.activeTaskWrapper.classList.add('pomodoro-form', 'window');
+    this.taskFormWrapper = document.createElement('div');
+    this.taskFormWrapper.classList.add('pomodoro-form', 'window');
+
     this.tasksListWrap = document.createElement('div');
     this.tasksListWrap.className = 'pomodoro-tasks';
     this.tasksList = document.createElement('ul');
@@ -17,30 +20,37 @@ export class RenderTomato {
   }
 
   renderTomato() {
-    if (this.timer.activeTask) {
-      const activeTitle = this.renderTitle();
-      const activeWindow = this.renderWindow();
-      this.activeTaskWrapper.append(activeTitle, activeWindow);
-    }
+    this.activeTaskWrapper.innerHTML = '';
+    const activeTitle = this.renderTitle();
+    const activeWindow = this.renderWindow();
+    this.activeTaskWrapper.append(activeTitle, activeWindow);
+
     if (!document.querySelector('.task-form')) {
       const taskForm = this.renderTaskForm();
-      this.activeTaskWrapper.append(taskForm);
+      this.taskFormWrapper.append(taskForm);
     }
     // const tasksList = this.renderTasksList();
     // this.tasksList.append(tasksList);
     this.renderTasksList();
     this.tasksListWrap.append(this.tasksList);
     document.querySelector(this.app).append(this.activeTaskWrapper,
-        this.tasksListWrap);
+        this.taskFormWrapper, this.tasksListWrap);
   }
 
   renderTitle() {
     const titleWrap = document.createElement('div');
     titleWrap.className = 'window__panel';
-    titleWrap.insertAdjacentHTML('afterbegin', `
-        <p class="window__panel-title">${this.timer.activeTask.name}</p>
-        <p class="window__panel-task-text">${this.timer.activeTask.count}</p>
+    if (!this.tomato.activeTask) {
+      titleWrap.insertAdjacentHTML('afterbegin', `
+        <p class="window__panel-title">Название задачи</p>
+        <p class="window__panel-task-text">1</p>
     `);
+    } else {
+      titleWrap.insertAdjacentHTML('afterbegin', `
+        <p class="window__panel-title">${this.tomato.activeTask.name}</p>
+        <p class="window__panel-task-text">${this.tomato.activeTask.count}</p>
+    `);
+    }
     return titleWrap;
   }
 
@@ -62,7 +72,7 @@ export class RenderTomato {
     taskForm.className = 'task-form';
     taskForm.insertAdjacentHTML('afterbegin', `
       <input type="text" class="task-name input-primary"
-        name="task-name" id="task-name" placeholder="название задачи">
+        name="task-name" id="task-name" placeholder="название задачи" required>
       <button type="button" class="button button-importance default"
         aria-label="Указать важность"></button>
       <button type="submit" class="button button-primary task-form__add-button">
@@ -73,7 +83,7 @@ export class RenderTomato {
 
   renderTasksList() {
     this.tasksList.innerHTML = '';
-    this.timer.tasks.forEach(item => {
+    this.tomato.tasks.forEach(item => {
       const task = document.createElement('li');
       task.classList.add(`pomodoro-tasks__list-task`, `${item.importance}`);
       task.insertAdjacentHTML('afterbegin', `

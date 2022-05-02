@@ -1,5 +1,5 @@
 import {Task} from './task';
-
+import {activeTomato} from '../index.js';
 export class Tomato {
   #taskTime = 25;
   #pauseTime = 5;
@@ -15,6 +15,7 @@ export class Tomato {
 
   addTask(task) {
     this.tasks.push(task);
+    activeTomato.renderTomato();
   }
 
   toActiveTask(id) {
@@ -23,6 +24,7 @@ export class Tomato {
         this.activeTask = item;
       }
     });
+    activeTomato.renderTomato();
   }
 
   startTask() {
@@ -47,4 +49,4 @@ export class Tomato {
   }
 }
 
-export const timer = new Tomato([]);
+export const tomato = new Tomato([]);
