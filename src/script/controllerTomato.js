@@ -12,7 +12,7 @@ export class ControllerTomato {
 
       const formData = new FormData(form);
       const data = Object.fromEntries(formData);
-      taskCreation(data['task-name'], tomato.tasks.length + 1, 'so-so');
+      taskCreation(data['task-name'], 0, 'so-so');
     });
   }
 
@@ -22,12 +22,23 @@ export class ControllerTomato {
       const target = e.target;
       if (target.closest('.pomodoro-tasks__task-text ')) {
         tomato.tasks.forEach((item, index) => {
-          if (index + 1 === +(target.parentNode.children[0].textContent)) {
+          if (item.name === (target.parentNode.children[1].textContent)) {
             tomato.toActiveTask(item.id);
           }
         });
       }
+      target.parentNode.children[1].classList
+          .add('pomodoro-tasks__task-text_active');
       console.log(tomato);
+    });
+  }
+
+  startTimer() {
+    document.addEventListener('click', e => {
+      const target = e.target;
+      if (target.closest('.button-start')) {
+        tomato.taskTimerRun();
+      }
     });
   }
 }

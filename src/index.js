@@ -8,8 +8,9 @@ export const activeTomato = new RenderTomato('.main__container', tomato);
 activeTomato.init();
 
 const form = document.querySelector('.task-form');
-export const controller = new ControllerTomato(form);
+export const controller = new ControllerTomato(tomato, form);
 
 controller.addTask(form);
 controller.toActive();
+controller.startTimer();
 

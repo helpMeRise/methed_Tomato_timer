@@ -1,9 +1,10 @@
 import {Task} from './task';
 import {activeTomato} from '../index.js';
+import {Timer} from './timer';
 export class Tomato {
-  #taskTime = 25;
-  #pauseTime = 5;
-  #bigPauseTime = 15;
+  #taskTime = 1;
+  #pauseTime = 2;
+  #bigPauseTime = 3;
   constructor(tasks = []) {
     if (Tomato.instance) {
       return Tomato.instance;
@@ -11,6 +12,18 @@ export class Tomato {
     this.tasks = tasks;
     this.activeTask = null;
     Tomato.instance = this;
+  }
+
+  get taskTime() {
+    return this.#taskTime;
+  }
+
+  get pauseTime() {
+    return this.#pauseTime;
+  }
+
+  get bigPauseTime() {
+    return this.#bigPauseTime;
   }
 
   addTask(task) {
@@ -40,10 +53,20 @@ export class Tomato {
     // }
   }
 
+  taskTimerRun() {
+    if (this.activeTask === null) {
+      alert('Нет активной задачи');
+      return;
+    }
+    const timer = new Timer(this.#taskTime,
+        this.#pauseTime, this.#bigPauseTime);
+    timer.startTimer();
+  }
+
   taskCount(id) {
     this.tasks.forEach(item => {
       if (item.id === id) {
-        item.count++;
+        item.countChange();
       }
     });
   }

@@ -10,6 +10,7 @@ export class RenderTomato {
     this.activeTaskWrapper.classList.add('pomodoro-form', 'window');
     this.taskFormWrapper = document.createElement('div');
     this.taskFormWrapper.classList.add('pomodoro-form', 'window');
+    this.wrap = document.createElement('div');
 
     this.tasksListWrap = document.createElement('div');
     this.tasksListWrap.className = 'pomodoro-tasks';
@@ -23,18 +24,23 @@ export class RenderTomato {
     this.activeTaskWrapper.innerHTML = '';
     const activeTitle = this.renderTitle();
     const activeWindow = this.renderWindow();
-    this.activeTaskWrapper.append(activeTitle, activeWindow);
 
+    this.activeTaskWrapper.append(activeTitle, activeWindow);
     if (!document.querySelector('.task-form')) {
       const taskForm = this.renderTaskForm();
       this.taskFormWrapper.append(taskForm);
     }
-    // const tasksList = this.renderTasksList();
-    // this.tasksList.append(tasksList);
+    this.wrap.append(this.activeTaskWrapper, this.taskFormWrapper);
     this.renderTasksList();
     this.tasksListWrap.append(this.tasksList);
-    document.querySelector(this.app).append(this.activeTaskWrapper,
-        this.taskFormWrapper, this.tasksListWrap);
+    if (!document.querySelector('.pomodoro-tasks__quest-list')) {
+      const instructions = this.renderInstruction();
+      this.tasksListWrap.insertBefore(instructions[0], this.tasksList);
+      this.tasksListWrap.insertBefore(instructions[1], this.tasksList);
+    }
+    this.tasksListWrap.append(this.tasksList);
+    document.querySelector(this.app).append(this.wrap,
+        this.tasksListWrap);
   }
 
   renderTitle() {
@@ -58,10 +64,10 @@ export class RenderTomato {
     const activeWindow = document.createElement('div');
     activeWindow.className = 'window__body';
     activeWindow.insertAdjacentHTML('afterbegin', `
-      <p class="window__timer-text">25:00</p>
+      <p class="window__timer-text">--:--</p>
       <div class="window__buttons">
-        <button class="button button-primary">Старт</button>
-        <button class="button button-secondary">Стоп</button>
+        <button class="button button-primary button-start">Старт</button>
+        <button class="button button-secondary button-stop">Стоп</button>
       </div>
     `);
     return activeWindow;
@@ -81,15 +87,46 @@ export class RenderTomato {
     return taskForm;
   }
 
+  renderInstruction() {
+    const instructionTitle = document.createElement('p');
+    instructionTitle.className = 'pomodoro-tasks__header-title';
+    instructionTitle.textContent = 'Инструкция:';
+    const instructions = document.createElement('ul');
+    instructions.className = 'pomodoro-tasks__quest-list';
+    instructions.insertAdjacentHTML('afterbegin', `
+      <li class="pomodoro-tasks__list-item">
+        Напишите название задачи чтобы её добавить
+      </li>
+      <li class="pomodoro-tasks__list-item">
+        Чтобы задачу активировать, выберите её из списка
+      </li>
+      <li class="pomodoro-tasks__list-item">
+        Запустите таймер
+      </li>
+      <li class="pomodoro-tasks__list-item">
+        Работайте пока таймер не прозвонит
+      </li>
+      <li class="pomodoro-tasks__list-item">
+        Сделайте короткий перерыв (5 минут)
+      </li>
+      <li class="pomodoro-tasks__list-item">-->
+        Продолжайте работать, пока задача не будет выполнена.
+      </li>
+      <li class="pomodoro-tasks__list-item">
+        Каждые 4 периода таймера делайте длинный перерыв (15-20 минут).
+      </li>
+    `);
+    return [instructionTitle, instructions];
+  }
+
   renderTasksList() {
     this.tasksList.innerHTML = '';
-    this.tomato.tasks.forEach(item => {
+    this.tomato.tasks.forEach((item, index) => {
       const task = document.createElement('li');
       task.classList.add(`pomodoro-tasks__list-task`, `${item.importance}`);
       task.insertAdjacentHTML('afterbegin', `
       <span class="count-number">${item.count}</span>
-      <button class="pomodoro-tasks__task-text 
-          pomodoro-tasks__task-text_active">${item.name}</button>
+      <button class="pomodoro-tasks__task-text">${item.name}</button>
       <button class="pomodoro-tasks__task-button"></button>
       <div class="burger-popup">
         <button class="popup-button burger-popup__edit-button">
@@ -98,6 +135,11 @@ export class RenderTomato {
           Удалить</button>
       </div>
     `);
+      if (this.tomato.activeTask !== null) {
+        if (item.id === this.tomato.activeTask.id) {
+          task.children[1].classList.add('pomodoro-tasks__task-text_active');
+        }
+      }
       this.tasksList.append(task);
     });
   }
