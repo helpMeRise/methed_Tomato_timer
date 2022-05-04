@@ -2,15 +2,19 @@ import './scss/index.scss';
 import {tomato} from './script/tomato';
 import {RenderTomato} from './script/renderTomato';
 import {ControllerTomato} from './script/controllerTomato';
-
+import {Timer} from './script/timer';
 
 export const activeTomato = new RenderTomato('.main__container', tomato);
 activeTomato.init();
+export const controller = new ControllerTomato(tomato);
+export const timer = new Timer(tomato.taskTime,
+    tomato.pauseTime, tomato.bigPauseTime);
 
-const form = document.querySelector('.task-form');
-export const controller = new ControllerTomato(tomato, form);
-
-controller.addTask(form);
+controller.addTask();
 controller.toActive();
 controller.startTimer();
+controller.importanceChange();
+controller.openTaskModal();
+controller.taskModal();
+
 

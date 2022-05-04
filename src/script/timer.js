@@ -1,5 +1,5 @@
-import {tomato} from './tomato';
 import {activeTomato} from '../index';
+import {tomato} from './tomato';
 export class Timer {
   constructor(taskTime, pauseTime, bigPauseTime) {
     this.taskTime = taskTime;
@@ -10,8 +10,8 @@ export class Timer {
   startTimer() {
     const timerText = document.querySelector('.window__timer-text');
     let time = this.taskTime * 60 * 1000;
-    timerText.textContent = `--:--`;
-
+    timerText.textContent = `00:00`;
+    let flag = false;
 
     const mainTimer = setInterval(() => {
       const minutes = Math.floor(time / 1000 / 60 % 60);
@@ -52,7 +52,25 @@ export class Timer {
             clearTimeout(pauseTimer);
           }
         }, 1000);
+        document.addEventListener('click', e => {
+          const target = e.target;
+
+          if (target.closest('.button-stop')) {
+            timerText.textContent = `00:00`;
+            clearTimeout(pauseTimer);
+          }
+        });
       }
     }, 1000);
+    document.addEventListener('click', e => {
+      const target = e.target;
+
+      if (target.closest('.button-stop')) {
+        timerText.textContent = `00:00`;
+        clearTimeout(mainTimer);
+      }
+    });
   }
 }
+
+

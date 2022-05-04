@@ -1,4 +1,3 @@
-import {Tomato} from './tomato';
 export class RenderTomato {
   constructor(app, tomato) {
     this.app = app;
@@ -64,7 +63,7 @@ export class RenderTomato {
     const activeWindow = document.createElement('div');
     activeWindow.className = 'window__body';
     activeWindow.insertAdjacentHTML('afterbegin', `
-      <p class="window__timer-text">--:--</p>
+      <p class="window__timer-text">00:00</p>
       <div class="window__buttons">
         <button class="button button-primary button-start">Старт</button>
         <button class="button button-secondary button-stop">Стоп</button>
@@ -121,7 +120,16 @@ export class RenderTomato {
 
   renderTasksList() {
     this.tasksList.innerHTML = '';
-    this.tomato.tasks.forEach((item, index) => {
+    const defaultList = [];
+    const soSo = [];
+    const important = [];
+    this.tomato.tasks.forEach(item => {
+      if (item.importance === 'default') defaultList.push(item);
+      if (item.importance === 'important') important.push(item);
+      if (item.importance === 'so-so') soSo.push(item);
+    });
+    const tasks = [...important, ...soSo, ...defaultList];
+    tasks.forEach((item, index) => {
       const task = document.createElement('li');
       task.classList.add(`pomodoro-tasks__list-task`, `${item.importance}`);
       task.insertAdjacentHTML('afterbegin', `
@@ -143,4 +151,9 @@ export class RenderTomato {
       this.tasksList.append(task);
     });
   }
+
+  renderListModal() {
+
+  }
 }
+

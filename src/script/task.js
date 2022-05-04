@@ -1,4 +1,5 @@
 import {Tomato} from './tomato';
+import {activeTomato} from '../index';
 
 export class Task {
   #name;

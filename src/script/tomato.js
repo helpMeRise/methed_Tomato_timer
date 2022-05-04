@@ -1,6 +1,4 @@
-import {Task} from './task';
-import {activeTomato} from '../index.js';
-import {Timer} from './timer';
+import {activeTomato, timer} from '../index.js';
 export class Tomato {
   #taskTime = 1;
   #pauseTime = 2;
@@ -40,27 +38,22 @@ export class Tomato {
     activeTomato.renderTomato();
   }
 
-  startTask() {
-    // // taskTimerRun() // запустит таймер когда он будет
-    // if (this.activeTask === null) {
-    //   throw new Error('Нет активной задачи');
-    //   //  if (!this.activeTask.count % 3) {
-    //   //    startBigPauseTimer();
-    //   //  } else {
-    //   //   startPauseTimer();
-    //   // }
-    //   this.taskCount(this.activeTask.id);
-    // }
-  }
-
   taskTimerRun() {
     if (this.activeTask === null) {
       alert('Нет активной задачи');
       return;
     }
-    const timer = new Timer(this.#taskTime,
-        this.#pauseTime, this.#bigPauseTime);
     timer.startTimer();
+  }
+
+  rename() {
+    activeTomato.renderTomato();
+  }
+
+  removeTask(task) {
+    const index = this.tasks.indexOf(task);
+    this.tasks.splice(index, 1);
+    activeTomato.renderTomato();
   }
 
   taskCount(id) {
